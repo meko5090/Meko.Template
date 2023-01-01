@@ -1,5 +1,5 @@
 ﻿using Meko.Identity.Models;
-using Microsoft.AspNetCore.Http;
+using Meko.Models.Response;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -13,9 +13,18 @@ namespace Meko.Identity.Controllers
     public class AuthController : ControllerBase
     {
         [HttpPost("login")]
-        public IActionResult Login(LoginModel user)
+        public BaseResponse Login(LoginModel user)
         {
-            if (user is null) { }
+            if (user is null)
+            {
+                return new ErrorResponse(
+                    "Error",
+                    new ErrorDetails(
+                        "Error in userName or Password",
+                        ErrorCodes.RequestValidation.ValidationError
+                    )
+                );
+            }
 
             if (user.UserName == "mahmoud" && user.Password == "P@ssw0rd")
             {
@@ -38,9 +47,15 @@ namespace Meko.Identity.Controllers
                 var tokenString = new JwtSecurityTokenHandler().WriteToken(
                     tokenOptions
                 );
-                return Ok(tokenString);
+                return new SuccessResponse<string>("Success", tokenString);
             }
-            return Unauthorized();
+            return new ErrorResponse(
+                "Error",
+                new ErrorDetails(
+                    "Error in userName or Password",
+                    ErrorCodes.RequestValidation.ValidationError
+                )
+            );
         }
     }
 }
