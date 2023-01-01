@@ -1,5 +1,4 @@
 using Meko.Identity;
-using System.Reflection.PortableExecutable;
 
 var builder = WebApplication.CreateBuilder(args);
 
