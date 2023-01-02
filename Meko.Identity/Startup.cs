@@ -16,6 +16,16 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddCors(options =>
+        {
+            options.AddPolicy(
+                "EnableCORS",
+                builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                }
+            );
+        });
         services
             .AddAuthentication(options =>
             {
@@ -84,6 +94,7 @@ public class Startup
 
         app.UseHttpsRedirection();
 
+        app.UseCors("EnableCORS");
         app.UseAuthentication();
         app.UseAuthorization();
 
