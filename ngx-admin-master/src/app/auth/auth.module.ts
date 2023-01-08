@@ -14,6 +14,7 @@ import {
 } from '@nebular/theme';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { LogoutComponent } from './logout/logout.component';
 
 
 @NgModule({
@@ -53,7 +54,8 @@ import { RegisterComponent } from './register/register.component';
     // ... here goes our new components
 
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    LogoutComponent
   ],
 })
 

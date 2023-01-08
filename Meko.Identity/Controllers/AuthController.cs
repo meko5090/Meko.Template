@@ -42,7 +42,7 @@ namespace Meko.Identity.Controllers
                 var tokenOptions = new JwtSecurityToken(
                     issuer: "https://localhost:5001",
                     audience: "https://localhost:5001",
-                    claims: new List<Claim>(),
+                    claims: new List<Claim> { new Claim("user", "mahmoud") },
                     expires: DateTime.Now.AddMinutes(5),
                     signingCredentials: signingCredential
                 );
