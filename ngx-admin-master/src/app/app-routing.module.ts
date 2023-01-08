@@ -12,7 +12,7 @@ import { AuthGuard } from './auth/auth-guard.service';
 
 export const routes: Routes = [
   {
-    path: 'pages',
+    path: 'pages',canActivate: [AuthGuard],
     loadChildren: () => import('./pages/pages.module')
       .then(m => m.PagesModule),
   },

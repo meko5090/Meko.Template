@@ -8,12 +8,12 @@ using System.Text;
 
 namespace Meko.Identity.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/auth")]
     [ApiController]
     public class AuthController : ControllerBase
     {
         [HttpPost("login")]
-        public BaseResponse Login(LoginModel user)
+        public IActionResult Login([FromBody] LoginModel user)
         {
             if (user is null)
             {
@@ -26,7 +26,10 @@ namespace Meko.Identity.Controllers
                 );
             }
 
-            if (user.UserName == "mahmoud" && user.Password == "P@ssw0rd")
+            if (
+                user.UserName == "mahmoud@meko.com"
+                && user.Password == "P@ssw0rd"
+            )
             {
                 var secretKey = new SymmetricSecurityKey(
                     Encoding.UTF8.GetBytes("AnaBabaYala@AnaBabaYala")
@@ -47,7 +50,7 @@ namespace Meko.Identity.Controllers
                 var tokenString = new JwtSecurityTokenHandler().WriteToken(
                     tokenOptions
                 );
-                return new SuccessResponse<string>("Success", tokenString);
+                return Ok(new LoginTokenModel { Token = tokenString, });
             }
             return new ErrorResponse(
                 "Error",

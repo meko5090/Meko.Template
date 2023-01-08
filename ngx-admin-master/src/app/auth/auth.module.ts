@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { NgxAuthRoutingModule } from './auth-routing.module';
-import { NbAuthModule } from '@nebular/auth';
+import { NbAuthJWTToken, NbAuthModule, NbPasswordAuthStrategy } from '@nebular/auth';
 import {
   NbAlertModule,
   NbButtonModule,
@@ -27,11 +27,31 @@ import { RegisterComponent } from './register/register.component';
     NbCheckboxModule,
     NgxAuthRoutingModule,
 
-    NbAuthModule,
+    NbAuthModule.forRoot({
+      strategies: [
+        NbPasswordAuthStrategy.setup({
+          name: 'email',
+          token: {
+            class: NbAuthJWTToken,
+            key: 'token',
+          },
+          baseEndpoint: 'https://localhost:44325',
+           login: {
+             // ...
+             endpoint: '/api/auth/login',
+           },
+           register: {
+             // ...
+             endpoint: '/api/auth/register',
+           },
+        }),
+      ],
+      forms: {},
+    }),
   ],
   declarations: [
     // ... here goes our new components
-  
+
     LoginComponent,
     RegisterComponent
   ],
