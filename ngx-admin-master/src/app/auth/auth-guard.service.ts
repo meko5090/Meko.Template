@@ -13,7 +13,7 @@ export class AuthGuard implements CanActivate {
   }
 
   canActivate() {
-    return this.authService.isAuthenticated()      .pipe(
+    return this.authService.isAuthenticated().pipe(
       tap(authenticated => {
         if (!authenticated) {
           this.router.navigate(['auth/login']);
@@ -21,5 +21,10 @@ export class AuthGuard implements CanActivate {
       }),
     );
     // canActive can return Observable<boolean>, which is exactly what isAuthenticated returns
+  }
+
+  logout(){
+    localStorage.removeItem('auth_app_token');
+    this.router.navigate(['auth/login']);
   }
 }

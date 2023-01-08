@@ -41,6 +41,7 @@ import { AuthGuard } from './auth/auth-guard.service';
     }),
     CoreModule.forRoot(),
     ThemeModule.forRoot(),
+
   ],
   bootstrap: [AppComponent],
   providers:[AuthGuard]

@@ -31,7 +31,7 @@ export const routes: Routes = [
         component: RegisterComponent,
       },
       {
-        path: 'logout',
+        path: 'Logout',
         component: LogoutComponent,
       },
       {

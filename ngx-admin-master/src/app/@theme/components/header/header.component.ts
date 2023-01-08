@@ -1,3 +1,4 @@
+import { AuthGuard } from './../../../auth/auth-guard.service';
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import {
   NbLayoutDirection,
@@ -10,7 +11,7 @@ import {
 
 import { UserData } from "../../../@core/data/users";
 import { LayoutService } from "../../../@core/utils";
-import { map, takeUntil } from "rxjs/operators";
+import { filter, map, takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
 import { NbAuthJWTToken, NbAuthService } from "@nebular/auth";
 
@@ -57,7 +58,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   currentLayout = "RTL";
 
   userMenu = [{ title: "Profile" }, { title: "Log out" }];
+  tag = 'user_menu';
 
+
+onMenuItemClick() { this.menuService.onItemClick() .pipe(filter(({ tag }) => tag === this.tag)) .subscribe(bag => console.log(bag)); }
   constructor(
     private sidebarService: NbSidebarService,
     private menuService: NbMenuService,
@@ -66,8 +70,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private layoutService: LayoutService,
     private layoutDirectionService: NbLayoutDirectionService,
     private authService: NbAuthService,
-    private breakpointService: NbMediaBreakpointsService
+    private breakpointService: NbMediaBreakpointsService,
+    private authGuard : AuthGuard
   ) {
+    menuService.onItemClick()
+    .pipe(filter(({ tag }) => tag === this.tag))
+    .subscribe(bag => this.authGuard.logout());
+
     this.authService.onTokenChange().subscribe((token: NbAuthJWTToken) => {
       if (token.isValid()) {
         this.user = token.getPayload(); // here we receive a payload from the token and assigns it to our `user` variable
